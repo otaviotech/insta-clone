@@ -1,0 +1,47 @@
+{
+  "name": "insta-clone",
+  "description": "An instagram clone",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "src/main/server/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/otaviotech/insta-clone.git"
+  },
+  "keywords": [],
+  "author": "Otávio Araújo <otaviotech@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/otaviotech/insta-clone/issues"
+  },
+  "homepage": "https://github.com/otaviotech/insta-clone#readme",
+  "scripts": {
+    "format": "prettier --write . --loglevel=warn",
+    "lint": "eslint --fix --ext .js .",
+    "start": "node ./src/main/server/index.js",
+    "prepare": "husky install",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
+  },
+  "devDependencies": {
+    "@jest/globals": "^27.4.6",
+    "@types/jest": "^27.4.0",
+    "@types/ramda": "^0.27.62",
+    "eslint": "^8.6.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.4",
+    "husky": "^7.0.4",
+    "jest": "^27.4.7",
+    "lint-staged": "^12.1.7",
+    "prettier": "2.5.1"
+  },
+  "lint-staged": {
+    "**/*": [
+      "eslint --fix --ext .js",
+      "prettier --write --ignore-unknown --loglevel=warn"
+    ]
+  },
+  "dependencies": {
+    "ramda": "^0.27.1"
+  }
+}
