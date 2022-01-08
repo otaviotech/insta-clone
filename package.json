@@ -36,8 +36,11 @@
     "prettier": "2.5.1"
   },
   "lint-staged": {
-    "**/*": [
-      "eslint --fix --ext .js",
+    "**/*.js": [
+      "eslint --fix",
+      "prettier --write --ignore-unknown --loglevel=warn"
+    ],
+    "**/*.json": [
       "prettier --write --ignore-unknown --loglevel=warn"
     ]
   },
