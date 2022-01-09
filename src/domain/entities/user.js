@@ -2,13 +2,13 @@ import { Profile } from './profile';
 
 export class User {
   constructor({
-    id = null,
-    name = null,
-    email = null,
-    password = null,
-    createdAt = null,
-    updatedAt = null,
-    profiles = [],
+    id,
+    name,
+    email,
+    password,
+    createdAt,
+    updatedAt,
+    profiles,
   } = {}) {
     this.id = id;
     this.name = name;
@@ -16,6 +16,6 @@ export class User {
     this.password = password;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
-    this.profiles = profiles.map((p) => new Profile(p));
+    this.profiles = profiles?.map((p) => new Profile(p));
   }
 }

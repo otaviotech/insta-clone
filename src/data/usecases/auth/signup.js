@@ -42,6 +42,6 @@ export class SignUpUseCase {
       password: hashedPassword,
     });
 
-    return new User(user);
+    return new User({ id: user.id });
   }
 }
