@@ -58,4 +58,4 @@ jobs:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: 'viotemplate-js'
           heroku_email: 'otaviotech@gmail.com'
-          procfile: npm run migrate && npm run start
+          procfile: 'web: npm run migrate && npm run start'
