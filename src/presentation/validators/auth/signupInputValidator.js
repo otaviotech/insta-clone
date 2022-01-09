@@ -2,7 +2,6 @@ import * as yup from 'yup';
 import { InputValidationError } from '../../errors';
 
 export class SignUpInputValidator {
-  // eslint-disable-next-line class-methods-use-this
   async validate(input) {
     const result = {
       isValid: true,
