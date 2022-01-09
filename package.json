@@ -21,6 +21,7 @@
     "lint:docs": "openapi lint openapi.yaml",
     "lint": "npm run lint:js && npm run lint:docs",
     "build:docs": "redoc-cli bundle openapi.yaml --cdn -o ./public/spec.html",
+    "build": "npm run build:docs",
     "dev": "nodemon --es-module-specifier-resolution=node ./src/main/server/index.js",
     "start": "node --es-module-specifier-resolution=node ./src/main/server/index.js",
     "prepare": "husky install",
