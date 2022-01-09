@@ -1,3 +1,5 @@
+import { User } from '../../../../../../domain/entities/user';
+
 export class PrismaCreateUserWithProfileRepository {
   #prisma;
 
@@ -14,10 +16,10 @@ export class PrismaCreateUserWithProfileRepository {
       },
     };
 
-    const u = await this.#prisma.user.create({
+    const prismaUser = await this.#prisma.user.create({
       data: payload,
     });
 
-    return { id: u.id };
+    return new User(prismaUser);
   }
 }

@@ -1,3 +1,5 @@
+import { User } from '../../../../../../domain/entities/user';
+
 export class PrismaFindUserByProfileIdRepository {
   #prisma;
 
@@ -14,6 +16,6 @@ export class PrismaFindUserByProfileIdRepository {
       return undefined;
     }
 
-    return prismaUser;
+    return new User(prismaUser);
   }
 }

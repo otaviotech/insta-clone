@@ -3,6 +3,8 @@ import {
   UsernameAlreadyTakenError,
 } from '../../../domain/errors';
 
+import { User } from '../../../domain/entities/user';
+
 export class SignUpUseCase {
   #paswordHasher;
 
@@ -40,6 +42,6 @@ export class SignUpUseCase {
       password: hashedPassword,
     });
 
-    return user;
+    return new User(user);
   }
 }

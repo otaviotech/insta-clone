@@ -1,3 +1,5 @@
+import { Profile } from '../../../../../../domain/entities/profile';
+
 export class PrismaFindProfileByEmailRepository {
   #prisma;
 
@@ -14,6 +16,6 @@ export class PrismaFindProfileByEmailRepository {
       return undefined;
     }
 
-    return prismaProfile;
+    return new Profile(prismaProfile);
   }
 }
