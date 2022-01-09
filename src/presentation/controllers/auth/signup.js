@@ -1,19 +1,21 @@
+import {
+  EmailAlreadyTakenError,
+  UsernameAlreadyTakenError,
+} from '../../../domain/errors';
 import { badRequest } from '../../helpers/http';
 
 export class SignUpController {
-  constructor(signUpUseCase, signUpRequestInputValidator) {
-    this.signUpUseCase = signUpUseCase;
-    this.signUpRequestInputValidator = signUpRequestInputValidator;
+  #signUpUseCase;
+
+  #signUpInputValidator;
+
+  constructor({ signUpUseCase, signUpInputValidator }) {
+    this.#signUpUseCase = signUpUseCase;
+    this.#signUpInputValidator = signUpInputValidator;
   }
 
   async handle(req) {
-    const response = {
-      statusCode: 201,
-      data: null,
-      error: null,
-    };
-
-    const validationResult = await this.signUpRequestInputValidator.validate(
+    const validationResult = await this.#signUpInputValidator.validate(
       req.body,
     );
 
@@ -21,10 +23,20 @@ export class SignUpController {
       return badRequest(validationResult.errors[0]);
     }
 
-    const signUpResult = await this.signUpUseCase.signup(req.body);
+    const domainErrors = [
+      EmailAlreadyTakenError,
+      UsernameAlreadyTakenError,
+    ].map((e) => e.name);
 
-    response.data = signUpResult;
+    try {
+      const data = await this.#signUpUseCase.signup(req.body);
+      return { statusCode: 201, data };
+    } catch (error) {
+      if (domainErrors.includes(error.name)) {
+        return badRequest(error);
+      }
 
-    return response;
+      throw error;
+    }
   }
 }

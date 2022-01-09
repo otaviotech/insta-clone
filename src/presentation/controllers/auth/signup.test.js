@@ -2,6 +2,10 @@ import { jest } from '@jest/globals';
 import R from 'ramda';
 import { InputValidationError } from '../../errors/inputValidation';
 import { SignUpController } from './signup';
+import {
+  EmailAlreadyTakenError,
+  UsernameAlreadyTakenError,
+} from '../../../domain/errors';
 
 describe('SignUpController', () => {
   const makeSut = () => {
@@ -13,10 +17,10 @@ describe('SignUpController', () => {
       validate: jest.fn(async () => ({ isValid: true, errors: [] })),
     };
 
-    const sut = new SignUpController(
-      signUpUseCaseStub,
-      signUpRequestInputValidatorStub,
-    );
+    const sut = new SignUpController({
+      signUpUseCase: signUpUseCaseStub,
+      signUpInputValidator: signUpRequestInputValidatorStub,
+    });
 
     const validRequest = {
       body: {
@@ -64,6 +68,50 @@ describe('SignUpController', () => {
       expect(result.error).toEqual(validationError);
     },
   );
+
+  const domainErrors = [
+    {
+      DomainError: EmailAlreadyTakenError,
+      name: EmailAlreadyTakenError.name,
+    },
+    {
+      DomainError: UsernameAlreadyTakenError,
+      name: UsernameAlreadyTakenError.name,
+    },
+  ];
+
+  it.each(domainErrors)(
+    'should return 400 if any domain error ($name) is thrown',
+    async ({ DomainError }) => {
+      const { sut, validRequest, signUpUseCaseStub } = makeSut();
+
+      const errorThrown = new DomainError();
+
+      jest.spyOn(signUpUseCaseStub, 'signup').mockImplementationOnce(() => {
+        throw errorThrown;
+      });
+
+      const httpResponse = await sut.handle(validRequest);
+
+      expect(httpResponse.statusCode).toBe(400);
+      expect(httpResponse.error).toEqual(errorThrown);
+      expect(httpResponse.data).toBeUndefined();
+    },
+  );
+
+  it('should throw if error is not a RequestValidationError nor a DomainError', async () => {
+    const { sut, validRequest, signUpUseCaseStub } = makeSut();
+
+    const errorThrown = new Error('This error should not be catch');
+
+    jest.spyOn(signUpUseCaseStub, 'signup').mockImplementationOnce(() => {
+      throw errorThrown;
+    });
+
+    const promise = sut.handle(validRequest);
+
+    expect(promise).rejects.toThrow(errorThrown);
+  });
 
   it('should call SignUpUseCase', async () => {
     const { sut, signUpUseCaseStub, validRequest } = makeSut();
