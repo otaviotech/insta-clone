@@ -5,7 +5,7 @@ import { PrismaFindUserByProfileIdRepository } from './findUserByProfileId';
 describe('PrismaFindUserByProfileIdRepository', () => {
   const makeSut = () => {
     const prismaMock = createPrismaMock();
-    const sut = new PrismaFindUserByProfileIdRepository(prismaMock);
+    const sut = new PrismaFindUserByProfileIdRepository({ prisma: prismaMock });
     const validInput = 1;
 
     return {

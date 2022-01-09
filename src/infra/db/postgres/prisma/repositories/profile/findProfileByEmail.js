@@ -1,7 +1,7 @@
 export class PrismaFindProfileByEmailRepository {
   #prisma;
 
-  constructor(prisma) {
+  constructor({ prisma }) {
     this.#prisma = prisma;
   }
 

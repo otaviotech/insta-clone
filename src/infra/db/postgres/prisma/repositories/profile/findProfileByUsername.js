@@ -1,7 +1,7 @@
 export class PrismaFindProfileByUsername {
   #prisma;
 
-  constructor(prisma) {
+  constructor({ prisma }) {
     this.#prisma = prisma;
   }
 

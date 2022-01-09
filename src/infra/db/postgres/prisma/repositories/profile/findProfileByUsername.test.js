@@ -5,7 +5,7 @@ import { PrismaFindProfileByUsername } from './findProfileByUsername';
 describe('PrismaProfileByUsernameRepository', () => {
   const makeSut = () => {
     const prismaMock = createPrismaMock();
-    const sut = new PrismaFindProfileByUsername(prismaMock);
+    const sut = new PrismaFindProfileByUsername({ prisma: prismaMock });
     const validInput = 'johndoe@email.com';
 
     return {

@@ -1,7 +1,7 @@
 export class PrismaCreateUserWithProfileRepository {
   #prisma;
 
-  constructor(prisma) {
+  constructor({ prisma }) {
     this.#prisma = prisma;
   }
 

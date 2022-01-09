@@ -5,7 +5,9 @@ import { PrismaCreateUserWithProfileRepository } from './createUserWithProfile';
 describe('PrismaCreateUserWithProfile', () => {
   const makeSut = () => {
     const prismaMock = createPrismaMock();
-    const sut = new PrismaCreateUserWithProfileRepository(prismaMock);
+    const sut = new PrismaCreateUserWithProfileRepository({
+      prisma: prismaMock,
+    });
     const validInput = {
       email: 'johndoe@email.com',
       password: 'abc123',
