@@ -16,14 +16,20 @@
   },
   "homepage": "https://github.com/otaviotech/insta-clone#readme",
   "scripts": {
-    "format": "prettier --write . --loglevel=warn",
-    "lint": "eslint --fix --ext .js .",
+    "format": "prettier --write . --loglevel=warn && prisma format",
+    "lint:js": "eslint --fix --ext .js .",
+    "lint:docs": "openapi lint openapi.yaml",
+    "lint": "npm run lint:js && npm run lint:docs",
+    "build:docs": "redoc-cli bundle openapi.yaml --cdn -o ./public/spec.html",
     "start": "nodemon --es-module-specifier-resolution=node ./src/main/server/index.js",
     "prepare": "husky install",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test:ci": "npm run test -- --coverage",
+    "migrate": "prisma migrate deploy"
   },
   "devDependencies": {
     "@jest/globals": "^27.4.6",
+    "@redocly/openapi-cli": "^1.0.0-beta.78",
     "@types/jest": "^27.4.0",
     "@types/ramda": "^0.27.62",
     "eslint": "^8.6.0",
@@ -34,7 +40,8 @@
     "jest": "^27.4.7",
     "lint-staged": "^12.1.7",
     "nodemon": "^2.0.15",
-    "prettier": "2.5.1"
+    "prettier": "2.5.1",
+    "redoc-cli": "^0.13.2"
   },
   "dependencies": {
     "@prisma/client": "^3.7.0",
