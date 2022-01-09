@@ -121,5 +121,7 @@ describe('SignUpUseCase', () => {
     });
 
     expect(user).toBeDefined();
+    expect(user.id).toBe(1);
+    expect(user.password).toBeUndefined();
   });
 });
