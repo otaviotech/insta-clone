@@ -1,0 +1,53 @@
+name: 'CI'
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v2
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+
+      - name: Update NPM
+        run: npm install -g npm@latest
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run all tests
+        run: npm run test:ci
+
+      - name: Build api docs
+        run: npm run build:docs
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          verbose: true
+
+      # - name: Install Sentry CLI
+      #   uses: mathieu-bour/setup-sentry-cli@1.2.0
+      #   with:
+      #     token: ${{ secrets.SENTRY_TOKEN }}
+      #     organization: ${{ secrets.SENTRY_ORGANIZATION }}
+      #     project: ${{ secrets.SENTRY_PROJECT }}
+
+      # - name: Deploy Sentry release
+      #   run: npm run sentry

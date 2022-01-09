@@ -1,7 +1,8 @@
 import { Router } from 'express';
+import { ApiSpecRouter } from './apiSpec';
 import { AuthRouter } from './auth';
 
-const routers = [AuthRouter];
+const routers = [ApiSpecRouter, AuthRouter];
 
 export const registerRoutes = (app) => {
   const v1Router = Router();
