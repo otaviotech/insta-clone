@@ -51,3 +51,11 @@ jobs:
 
       # - name: Deploy Sentry release
       #   run: npm run sentry
+
+      - uses: akhileshns/heroku-deploy@v3.12.12
+        name: Deploy to Heroku
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: 'viotemplate-js'
+          heroku_email: 'otaviotech@gmail.com'
+          procfile: npm run migrate && npm run start
