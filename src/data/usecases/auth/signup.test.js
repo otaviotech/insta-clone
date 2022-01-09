@@ -23,11 +23,11 @@ describe('SignUpUseCase', () => {
       createWithProfile: jest.fn(async () => ({ id: 1 })),
     };
 
-    const sut = new SignUpUseCase(
-      passwordHasherStub,
-      profileRepoStub,
-      userRepoStub,
-    );
+    const sut = new SignUpUseCase({
+      passwordHasher: passwordHasherStub,
+      profileRepository: profileRepoStub,
+      userRepository: userRepoStub,
+    });
 
     const validInput = {
       email: 'johndoe@email.com',

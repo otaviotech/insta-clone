@@ -10,7 +10,7 @@ export class SignUpUseCase {
 
   #userRepository;
 
-  constructor(passwordHasher, profileRepository, userRepository) {
+  constructor({ passwordHasher, profileRepository, userRepository }) {
     this.#paswordHasher = passwordHasher;
     this.#profileRepository = profileRepository;
     this.#userRepository = userRepository;
