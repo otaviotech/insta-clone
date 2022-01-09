@@ -6,7 +6,7 @@ const router = Router();
 
 router.post('/signup', adapt(container.resolve('signUpController')));
 
-router.post('/signin', () => {});
+router.post('/signin', adapt(container.resolve('signInController')));
 
 export const AuthRouter = {
   prefix: '/auth',

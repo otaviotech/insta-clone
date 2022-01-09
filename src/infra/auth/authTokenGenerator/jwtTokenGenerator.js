@@ -9,7 +9,7 @@ export class JwtTokenGenerator {
 
   async generateAuthToken(payload) {
     return new Promise((resolve) => {
-      jwt.sign(payload, this.secret, {}, (err, token) => {
+      jwt.sign(payload, this.#secret, {}, (err, token) => {
         if (err) {
           throw err;
         }

@@ -21,6 +21,12 @@ describe('JwtTokenGenerator', () => {
 
     const result = await sut.generateAuthToken(validInput);
 
+    expect(jwt.sign).toHaveBeenCalledWith(
+      validInput,
+      'SECRET_KEY',
+      {},
+      expect.anything(),
+    );
     expect(result).toBe(JWT_RESULT);
   });
 
