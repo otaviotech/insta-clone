@@ -49,5 +49,14 @@ describe('SignUpInputValidator', () => {
         new InputValidationError('Field email must be a valid email.'),
       ]);
     });
+
+    it('should understand a valid input', async () => {
+      const { sut, validInput } = makeSut();
+
+      const result = await sut.validate(validInput);
+
+      expect(result.isValid).toBe(true);
+      expect(result.errors).toHaveLength(0);
+    });
   });
 });
