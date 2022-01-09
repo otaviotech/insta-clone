@@ -35,6 +35,15 @@
     "lint-staged": "^12.1.7",
     "prettier": "2.5.1"
   },
+  "dependencies": {
+    "@prisma/client": "^3.7.0",
+    "prisma": "^3.7.0",
+    "ramda": "^0.27.1",
+    "yup": "^0.32.11"
+  },
+  "prisma": {
+    "schema": "src/infra/db/postgres/prisma/schema.prisma"
+  },
   "lint-staged": {
     "**/*.js": [
       "eslint --fix",
@@ -43,9 +52,5 @@
     "**/*.json": [
       "prettier --write --ignore-unknown --loglevel=warn"
     ]
-  },
-  "dependencies": {
-    "ramda": "^0.27.1",
-    "yup": "^0.32.11"
   }
 }
