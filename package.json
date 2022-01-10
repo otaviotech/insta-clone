@@ -1,7 +1,7 @@
 {
   "name": "insta-clone",
   "description": "An instagram clone",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "type": "module",
   "main": "src/main/server/index.js",
   "repository": {
@@ -43,7 +43,9 @@
     "lint-staged": "^12.1.7",
     "nodemon": "^2.0.15",
     "prettier": "2.5.1",
-    "redoc-cli": "^0.13.2"
+    "read-package-json": "^4.1.1",
+    "redoc-cli": "^0.13.2",
+    "shelljs": "^0.8.5"
   },
   "dependencies": {
     "@prisma/client": "^3.7.0",
@@ -59,6 +61,7 @@
     "pino": "^7.6.2",
     "pino-http": "^6.5.0",
     "pino-pretty": "^7.3.0",
+    "pino-sentry": "^0.11.0",
     "prisma": "^3.7.0",
     "ramda": "^0.27.1",
     "yup": "^0.32.11"
