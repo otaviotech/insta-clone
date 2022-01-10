@@ -3,5 +3,5 @@ import { appLogger } from '../../logger';
 
 export const pinoHttpMiddleware = pinoHttp({
   logger: appLogger,
-  genReqId: (req) => req['request-id'],
+  genReqId: (req) => req.rid,
 });
