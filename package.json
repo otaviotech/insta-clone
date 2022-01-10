@@ -27,7 +27,8 @@
     "prepare": "husky install",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "test:ci": "npm run test -- --coverage",
-    "migrate": "prisma migrate deploy"
+    "migrate": "prisma migrate deploy",
+    "sentry": "node --es-module-specifier-resolution=node ./scripts/sentry.js"
   },
   "devDependencies": {
     "@jest/globals": "^27.4.6",
