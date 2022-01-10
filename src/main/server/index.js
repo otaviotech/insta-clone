@@ -1,23 +1,24 @@
 /* eslint-disable no-console */
 import { AppEnv } from '../env';
+import { appLogger } from '../logger';
 import { app } from './app';
 
 process.on('uncaughtException', (error) => {
-  console.error(error);
+  appLogger.error(error);
   process.exit(1);
 });
 
 process.on('unhandledRejection', (error) => {
-  console.error(error);
+  appLogger.error(error);
   process.exit(1);
 });
 
 app
   .listen(AppEnv.PORT)
   .on('listening', () => {
-    console.log(`Server is ready for requests at port ${AppEnv.PORT}.`);
+    appLogger.info(`Server is ready for requests at port ${AppEnv.PORT}.`);
   })
   .on('error', (error) => {
-    console.error(error);
+    appLogger.error(error);
     process.exit(1);
   });

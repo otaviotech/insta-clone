@@ -1,3 +1,5 @@
+import { appLogger } from '../../logger';
+
 export const adapt = (controller) => async (expressReq, expressRes) => {
   const req = {
     body: expressReq.body,
@@ -7,8 +9,7 @@ export const adapt = (controller) => async (expressReq, expressRes) => {
     const { statusCode, data, error } = await controller.handle(req);
     return expressRes.status(statusCode).json({ data, error });
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error);
+    appLogger.error(error);
     return expressRes.sendStatus(500);
   }
 };
