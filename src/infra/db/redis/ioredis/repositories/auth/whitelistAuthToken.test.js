@@ -4,7 +4,7 @@ import { RedisIOWhitelistAuthTokenRepository } from './whitelistAuthToken';
 describe('RedisIOWhitelistAuthTokenRepository', () => {
   const makeSut = () => {
     const redisStub = {
-      setex: jest.fn(),
+      set: jest.fn(),
     };
     const sut = new RedisIOWhitelistAuthTokenRepository({
       redis: redisStub,
@@ -18,16 +18,18 @@ describe('RedisIOWhitelistAuthTokenRepository', () => {
 
   it('should store the user token at the right key', async () => {
     const { sut, redisStub } = makeSut();
+    const EXP_MS = 1641934763;
 
-    redisStub.setex.mockImplementationOnce((a, b, c, cb) => cb('OK'));
+    redisStub.set.mockImplementationOnce((a, b, c, d, cb) => cb('OK'));
 
-    await sut.whitelistAuthToken('<token>');
+    await sut.whitelistAuthToken('<token>', EXP_MS);
 
-    expect(redisStub.setex).toHaveBeenCalledWith(
+    expect(redisStub.set).toHaveBeenCalledWith(
       'authToken:<token>',
-      expect.any(Number),
       'valid',
-      expect.anything(),
+      'EXAT',
+      EXP_MS,
+      expect.any(Function),
     );
   });
 });

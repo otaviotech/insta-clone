@@ -27,18 +27,22 @@ export class AuthService {
     this.#findWhitelistedTokenRepository = findWhitelistedTokenRepository;
   }
 
+  /* istanbul ignore next */
   async generateAuthToken(payload) {
     return this.#authTokenGenerator.generateAuthToken(payload);
   }
 
+  /* istanbul ignore next */
   async comparePasswords(left, right) {
     return this.#passwordHashComparer.comparePasswords(left, right);
   }
 
+  /* istanbul ignore next */
   async hashPassword(password) {
     return this.#passwordHasher.hashPassword(password);
   }
 
+  /* istanbul ignore next */
   async validateAuthToken(token) {
     return this.#authTokenValidator.validateAuthToken(token);
   }
@@ -52,6 +56,7 @@ export class AuthService {
     );
   }
 
+  /* istanbul ignore next */
   async findWhitelistedToken(token) {
     return this.#findWhitelistedTokenRepository.findWhitelistedToken(token);
   }
