@@ -14,6 +14,7 @@ export const AppEnv = {
   SOURCES_ROOT: path.resolve(__dirname, '../'),
   PUBLIC_DIR: path.resolve(__dirname, '../../public'),
   DATABASE_URL: process.env.DATABASE_URL,
+  REDIS_URL: process.env.REDIS_URL,
   PORT: process.env.PORT,
   AUTH_SECRET: process.env.AUTH_SECRET,
   SENTRY_DSN: process.env.SENTRY_DSN,
