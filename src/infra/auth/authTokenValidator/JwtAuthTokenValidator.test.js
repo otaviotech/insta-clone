@@ -25,6 +25,37 @@ describe('Name of the group', () => {
     expect(promise).rejects.toThrow(errorThrown);
   });
 
+  const errors = [
+    {
+      Err: jsonwebtoken.TokenExpiredError,
+      name: jsonwebtoken.TokenExpiredError.name,
+    },
+
+    {
+      Err: jsonwebtoken.NotBeforeError,
+      name: jsonwebtoken.NotBeforeError.name,
+    },
+
+    {
+      Err: jsonwebtoken.JsonWebTokenError,
+      name: jsonwebtoken.JsonWebTokenError.name,
+    },
+  ];
+
+  it.each(errors)("should not throw if it's a $name", async (err) => {
+    const { sut } = makeSut();
+
+    const errorThrown = new err.Err('Error thrown by jsonwebtoken');
+
+    jest
+      .spyOn(jsonwebtoken, 'verify')
+      .mockImplementationOnce((a, b, cb) => cb(errorThrown));
+
+    const result = await sut.validateAuthToken('<token>');
+
+    expect(result.isValid).toBe(false);
+  });
+
   it('should return the data inside the token', async () => {
     const { sut } = makeSut();
 
