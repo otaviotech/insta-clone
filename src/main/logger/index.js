@@ -2,6 +2,7 @@ import pino from 'pino';
 import pinoPretty from 'pino-pretty';
 import { createWriteStream } from 'pino-sentry';
 import { AppEnv } from '../env';
+import { adaptLogTags, adaptRequestForLogging } from './utils';
 
 const isProduction = AppEnv.NODE_ENV === 'production';
 const SERIALIZATION_DEPTH = 10;
@@ -17,7 +18,7 @@ const sentryStream = createWriteStream({
 const prettyPrint = isProduction ? false : { levelFirst: true };
 const prettifier = isProduction ? undefined : pinoPretty({ colorize: true });
 
-export const appLogger = pino(
+const pinoLogger = pino(
   {
     depthLimit: SERIALIZATION_DEPTH,
     prettyPrint,
@@ -25,3 +26,15 @@ export const appLogger = pino(
   },
   pino.multistream([sentryStream, process.stdout]),
 );
+
+export const appLogger = Object.assign(pinoLogger, {
+  errorWithRequest: (error, req) => {
+    pinoLogger.error({
+      err: error,
+      extra: {
+        request: adaptRequestForLogging(req),
+      },
+      tags: adaptLogTags(req),
+    });
+  },
+});
