@@ -85,7 +85,7 @@ describe('SignInUseCase', () => {
 
     const result = await sut.signin(validInput);
 
-    expect(authServiceStub.generateAuthToken).toHaveBeenCalledWith(user);
+    expect(authServiceStub.generateAuthToken).toHaveBeenCalledWith({ user });
 
     expect(result).toEqual('A.JWT.TOKEN');
   });
@@ -102,7 +102,7 @@ describe('SignInUseCase', () => {
 
     const result = await sut.signin(validInput);
 
-    expect(authServiceStub.generateAuthToken).toHaveBeenCalledWith(user);
+    expect(authServiceStub.generateAuthToken).toHaveBeenCalledWith({ user });
     expect(authServiceStub.whitelistAuthToken).toHaveBeenCalledWith(
       'A.JWT.TOKEN',
     );

@@ -5,7 +5,7 @@ import { JwtTokenGenerator } from './jwtTokenGenerator';
 describe('JwtTokenGenerator', () => {
   const makeSut = () => {
     const sut = new JwtTokenGenerator('SECRET_KEY');
-    const validInput = { id: 1 };
+    const validInput = { user: { id: 1 } };
 
     return { sut, validInput };
   };
