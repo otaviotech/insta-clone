@@ -4,11 +4,8 @@ import { AuthenticateUserByTokenUseCase } from './authenticateUserByToken';
 
 describe('AuthenticateUserByTokenUseCase', () => {
   const makeSut = () => {
-    const findUserByTokenRepositoryStub = {
+    const authServiceStub = {
       findUserByToken: jest.fn(async () => undefined),
-    };
-
-    const authTokenValidatorStub = {
       validateAuthToken: jest.fn(async () => ({
         isValid: true,
         data: { id: 1 },
@@ -16,21 +13,19 @@ describe('AuthenticateUserByTokenUseCase', () => {
     };
 
     const sut = new AuthenticateUserByTokenUseCase({
-      findUserByTokenRepository: findUserByTokenRepositoryStub,
-      authTokenValidator: authTokenValidatorStub,
+      authService: authServiceStub,
     });
 
     return {
       sut,
-      findUserByTokenRepositoryStub,
-      authTokenValidatorStub,
+      authServiceStub,
     };
   };
 
   it('should return the user', async () => {
-    const { sut, findUserByTokenRepositoryStub } = makeSut();
+    const { sut, authServiceStub } = makeSut();
 
-    findUserByTokenRepositoryStub.findUserByToken.mockResolvedValueOnce({
+    authServiceStub.findUserByToken.mockResolvedValueOnce({
       id: 2,
     });
 
@@ -40,10 +35,9 @@ describe('AuthenticateUserByTokenUseCase', () => {
   });
 
   it('should throw an InvalidCredentialsError if token is not valid', () => {
-    const { sut, findUserByTokenRepositoryStub, authTokenValidatorStub } =
-      makeSut();
+    const { sut, authServiceStub } = makeSut();
 
-    authTokenValidatorStub.validateAuthToken.mockResolvedValueOnce({
+    authServiceStub.validateAuthToken.mockResolvedValueOnce({
       isValid: false,
       data: null,
     });
@@ -52,17 +46,12 @@ describe('AuthenticateUserByTokenUseCase', () => {
 
     expect(promise).rejects.toThrow(new InvalidCredentialsError());
 
-    expect(authTokenValidatorStub.validateAuthToken).toHaveBeenCalledWith(
-      '<token>',
-    );
-    expect(
-      findUserByTokenRepositoryStub.findUserByToken,
-    ).not.toHaveBeenCalled();
+    expect(authServiceStub.validateAuthToken).toHaveBeenCalledWith('<token>');
+    expect(authServiceStub.findUserByToken).not.toHaveBeenCalled();
   });
 
   it('should throw an InvalidCredentialsError if no user is found', (done) => {
-    const { sut, findUserByTokenRepositoryStub, authTokenValidatorStub } =
-      makeSut();
+    const { sut, authServiceStub } = makeSut();
 
     const promise = sut.authenticateUserByToken('<token>');
 
@@ -71,13 +60,11 @@ describe('AuthenticateUserByTokenUseCase', () => {
       .catch(() => {
         expect(promise).rejects.toThrow(new InvalidCredentialsError());
 
-        expect(authTokenValidatorStub.validateAuthToken).toHaveBeenCalledWith(
+        expect(authServiceStub.validateAuthToken).toHaveBeenCalledWith(
           '<token>',
         );
 
-        expect(
-          findUserByTokenRepositoryStub.findUserByToken,
-        ).toHaveBeenCalledWith('<token>');
+        expect(authServiceStub.findUserByToken).toHaveBeenCalledWith('<token>');
 
         done();
       });
