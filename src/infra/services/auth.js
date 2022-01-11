@@ -5,10 +5,30 @@ export class AuthService {
 
   #passwordHasher;
 
-  constructor({ authTokenGenerator, passwordHashComparer, passwordHasher }) {
+  #authTokenValidator;
+
+  #whitelistAuthTokenRepository;
+
+  #findWhitelistedTokenRepository;
+
+  #userRepository;
+
+  constructor({
+    authTokenGenerator,
+    passwordHashComparer,
+    passwordHasher,
+    authTokenValidator,
+    whitelistAuthTokenRepository,
+    findWhitelistedTokenRepository,
+    userRepository,
+  }) {
     this.#authTokenGenerator = authTokenGenerator;
     this.#passwordHashComparer = passwordHashComparer;
     this.#passwordHasher = passwordHasher;
+    this.#authTokenValidator = authTokenValidator;
+    this.#whitelistAuthTokenRepository = whitelistAuthTokenRepository;
+    this.#findWhitelistedTokenRepository = findWhitelistedTokenRepository;
+    this.#userRepository = userRepository;
   }
 
   async generateAuthToken(payload) {
@@ -21,5 +41,17 @@ export class AuthService {
 
   async hashPassword(password) {
     return this.#passwordHasher.hashPassword(password);
+  }
+
+  async validateAuthToken(token) {
+    return this.#authTokenValidator.validateAuthToken(token);
+  }
+
+  async whitelistAuthTokenRepository(token) {
+    return this.#whitelistAuthTokenRepository.whitelistAuthToken(token);
+  }
+
+  async findWhitelistedToken(token) {
+    return this.#findWhitelistedTokenRepository.findWhitelistedToken(token);
   }
 }

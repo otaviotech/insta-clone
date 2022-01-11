@@ -1,5 +1,5 @@
 import { asClass } from 'awilix';
-import { AuthService } from '../../../../infra/services/auth';
+import { AuthService } from '../../../../data/services/auth';
 
 export const registerServices = (container) => {
   container.register({

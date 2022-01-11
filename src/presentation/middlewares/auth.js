@@ -1,10 +1,10 @@
 import { InvalidCredentialsError } from '../../domain/errors';
 
 export class AuthMiddleware {
-  #authService;
+  #authenticateUserByTokenUseCase;
 
-  constructor({ authService }) {
-    this.#authService = authService;
+  constructor({ authenticateUserByTokenUseCase }) {
+    this.#authenticateUserByTokenUseCase = authenticateUserByTokenUseCase;
   }
 
   async handle(req) {
@@ -13,7 +13,10 @@ export class AuthMiddleware {
     const token = authorization.replace?.(/^Bearer /, '').trim();
 
     try {
-      const user = await this.#authService.authenticateUserByToken(token);
+      const user =
+        await this.#authenticateUserByTokenUseCase.authenticateUserByToken(
+          token,
+        );
 
       return {
         injectReq: {
