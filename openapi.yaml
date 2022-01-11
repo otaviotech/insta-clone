@@ -84,7 +84,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  error:
+                  erro:
                     type: object
                     properties:
                       name:
@@ -124,4 +124,52 @@ paths:
                 value:
                   identifier: jdoe
                   password: strongpassword!
-      responses: {}
+
+      responses:
+        200:
+          description: Account created successfuly.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    description: The response body.
+                    properties:
+                      jwt:
+                        type: string
+                        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+        400:
+          description: Sent credentials are invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        description: The name of the error.
+                        example: InvalidCredentialsError
+
+        500:
+          description: Something went wrong while handling the request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        description: The name of the error.
+                        example: InternalError
+                      message:
+                        type: string
+                        description: The details of the error.
+                        example: Something went wrong.
