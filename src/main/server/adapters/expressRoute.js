@@ -3,6 +3,7 @@ import { appLogger } from '../../logger';
 export const adapt = (controller) => async (expressReq, expressRes) => {
   const req = {
     body: expressReq.body,
+    headers: expressReq.headers,
   };
 
   try {

@@ -7,7 +7,7 @@ import {
 
 export const registerAuthRepositories = (container) => {
   container.register({
-    blacklistAuthToken: asClass(RedisIOBlacklistAuthTokenRepository),
+    blacklistAuthTokenRepository: asClass(RedisIOBlacklistAuthTokenRepository),
     findWhitelistedTokenRepository: asClass(
       RedisIOFindWhitelistedTokenRepository,
     ),

@@ -11,6 +11,8 @@ export class AuthService {
 
   #findWhitelistedTokenRepository;
 
+  #blacklistAuthTokenRepository;
+
   constructor({
     authTokenGenerator,
     passwordHashComparer,
@@ -18,6 +20,7 @@ export class AuthService {
     authTokenValidator,
     whitelistAuthTokenRepository,
     findWhitelistedTokenRepository,
+    blacklistAuthTokenRepository,
   }) {
     this.#authTokenGenerator = authTokenGenerator;
     this.#passwordHashComparer = passwordHashComparer;
@@ -25,6 +28,7 @@ export class AuthService {
     this.#authTokenValidator = authTokenValidator;
     this.#whitelistAuthTokenRepository = whitelistAuthTokenRepository;
     this.#findWhitelistedTokenRepository = findWhitelistedTokenRepository;
+    this.#blacklistAuthTokenRepository = blacklistAuthTokenRepository;
   }
 
   /* istanbul ignore next */
@@ -42,9 +46,14 @@ export class AuthService {
     return this.#passwordHasher.hashPassword(password);
   }
 
-  /* istanbul ignore next */
   async validateAuthToken(token) {
-    return this.#authTokenValidator.validateAuthToken(token);
+    const validation = await this.#authTokenValidator.validateAuthToken(token);
+    const whitelistedToken =
+      await this.#findWhitelistedTokenRepository.findWhitelistedToken(token);
+
+    validation.isValid = validation.isValid && whitelistedToken?.length > 0;
+
+    return validation;
   }
 
   async whitelistAuthToken(token) {
@@ -59,5 +68,10 @@ export class AuthService {
   /* istanbul ignore next */
   async findWhitelistedToken(token) {
     return this.#findWhitelistedTokenRepository.findWhitelistedToken(token);
+  }
+
+  /* istanbul ignore next */
+  async blacklistAuthToken(token) {
+    return this.#blacklistAuthTokenRepository.blacklistAuthToken(token);
   }
 }
