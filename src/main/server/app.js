@@ -1,4 +1,5 @@
 import express from 'express';
+import 'express-async-errors';
 import { registerMiddlewares } from './middlewares';
 import { errorMiddleware } from './middlewares/error';
 import { registerRoutes } from './routes';

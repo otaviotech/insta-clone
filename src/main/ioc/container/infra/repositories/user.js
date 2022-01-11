@@ -5,6 +5,7 @@ import {
   PrismaFindUserByEmailRepository,
   PrismaFindUserByProfileIdRepository,
   PrismaUserRepository,
+  PrismaFindUserByIdRepository,
 } from '../../../../../infra/db/postgres/prisma/repositories/user';
 
 export const registerUserRepositories = (container) => {
@@ -14,6 +15,7 @@ export const registerUserRepositories = (container) => {
     ),
     findUserByEmailRepository: asClass(PrismaFindUserByEmailRepository),
     findUserByProfileIdRepository: asClass(PrismaFindUserByProfileIdRepository),
+    findUserByIdRepository: asClass(PrismaFindUserByIdRepository),
     userRepository: asClass(PrismaUserRepository),
   });
 };
