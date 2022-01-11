@@ -44,7 +44,12 @@ export class AuthService {
   }
 
   async whitelistAuthToken(token) {
-    return this.#whitelistAuthTokenRepository.whitelistAuthToken(token);
+    const { data } = await this.validateAuthToken(token);
+
+    return this.#whitelistAuthTokenRepository.whitelistAuthToken(
+      token,
+      data.exp,
+    );
   }
 
   async findWhitelistedToken(token) {

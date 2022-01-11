@@ -5,9 +5,9 @@ export class RedisIOWhitelistAuthTokenRepository {
     this.#redis = redis;
   }
 
-  async whitelistAuthToken(token) {
+  async whitelistAuthToken(token, expAt) {
     return new Promise((resolve) => {
-      this.#redis.setex(`authToken:${token}`, 1000, 'valid', () => {
+      this.#redis.set(`authToken:${token}`, 'valid', 'EXAT', expAt, () => {
         resolve();
       });
     });
