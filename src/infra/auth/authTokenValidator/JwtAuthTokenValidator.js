@@ -11,10 +11,22 @@ export class JwtAuthTokenValidator {
     return new Promise((resolve) => {
       jsonwebtoken.verify(token, this.#secret, (err, jwtPayload) => {
         if (err) {
-          throw err;
+          const isJwtError = [
+            jsonwebtoken.JsonWebTokenError.name,
+            jsonwebtoken.NotBeforeError.name,
+            jsonwebtoken.TokenExpiredError.name,
+          ].includes(err.name);
+
+          if (!isJwtError) {
+            throw err;
+          }
+
+          return resolve({
+            isValid: false,
+          });
         }
 
-        resolve({
+        return resolve({
           isValid: true,
           data: jwtPayload,
         });
