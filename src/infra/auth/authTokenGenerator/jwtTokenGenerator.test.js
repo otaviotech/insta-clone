@@ -24,7 +24,7 @@ describe('JwtTokenGenerator', () => {
     expect(jwt.sign).toHaveBeenCalledWith(
       validInput,
       'SECRET_KEY',
-      {},
+      { expiresIn: '1h' },
       expect.anything(),
     );
     expect(result).toBe(JWT_RESULT);

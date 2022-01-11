@@ -59,13 +59,18 @@ describe('Name of the group', () => {
   it('should return the data inside the token', async () => {
     const { sut } = makeSut();
 
+    const EXP_MS = 1641934763;
+    const IAT_MS = 1641931163;
+
     jest
       .spyOn(jsonwebtoken, 'verify')
-      .mockImplementationOnce((a, b, cb) => cb(null, { id: 1 }));
+      .mockImplementationOnce((a, b, cb) =>
+        cb(null, { id: 1, iat: IAT_MS, exp: EXP_MS }),
+      );
 
     const result = await sut.validateAuthToken('<token>');
 
     expect(result.isValid).toBe(true);
-    expect(result.data).toEqual({ id: 1 });
+    expect(result.data).toEqual({ id: 1, iat: IAT_MS, exp: EXP_MS });
   });
 });
