@@ -4,28 +4,33 @@ import { AuthenticateUserByTokenUseCase } from './authenticateUserByToken';
 
 describe('AuthenticateUserByTokenUseCase', () => {
   const makeSut = () => {
+    const userRepositoryStub = {
+      findById: jest.fn(async () => undefined),
+    };
+
     const authServiceStub = {
-      findUserByToken: jest.fn(async () => undefined),
       validateAuthToken: jest.fn(async () => ({
         isValid: true,
-        data: { id: 1 },
+        data: { user: { id: 1 } },
       })),
     };
 
     const sut = new AuthenticateUserByTokenUseCase({
       authService: authServiceStub,
+      userRepository: userRepositoryStub,
     });
 
     return {
       sut,
       authServiceStub,
+      userRepositoryStub,
     };
   };
 
   it('should return the user', async () => {
-    const { sut, authServiceStub } = makeSut();
+    const { sut, userRepositoryStub } = makeSut();
 
-    authServiceStub.findUserByToken.mockResolvedValueOnce({
+    userRepositoryStub.findById.mockResolvedValueOnce({
       id: 2,
     });
 
@@ -35,7 +40,7 @@ describe('AuthenticateUserByTokenUseCase', () => {
   });
 
   it('should throw an InvalidCredentialsError if token is not valid', () => {
-    const { sut, authServiceStub } = makeSut();
+    const { sut, authServiceStub, userRepositoryStub } = makeSut();
 
     authServiceStub.validateAuthToken.mockResolvedValueOnce({
       isValid: false,
@@ -47,11 +52,11 @@ describe('AuthenticateUserByTokenUseCase', () => {
     expect(promise).rejects.toThrow(new InvalidCredentialsError());
 
     expect(authServiceStub.validateAuthToken).toHaveBeenCalledWith('<token>');
-    expect(authServiceStub.findUserByToken).not.toHaveBeenCalled();
+    expect(userRepositoryStub.findById).not.toHaveBeenCalled();
   });
 
   it('should throw an InvalidCredentialsError if no user is found', (done) => {
-    const { sut, authServiceStub } = makeSut();
+    const { sut, authServiceStub, userRepositoryStub } = makeSut();
 
     const promise = sut.authenticateUserByToken('<token>');
 
@@ -64,7 +69,7 @@ describe('AuthenticateUserByTokenUseCase', () => {
           '<token>',
         );
 
-        expect(authServiceStub.findUserByToken).toHaveBeenCalledWith('<token>');
+        expect(userRepositoryStub.findById).toHaveBeenCalledWith(1);
 
         done();
       });
