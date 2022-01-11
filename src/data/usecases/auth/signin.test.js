@@ -12,6 +12,7 @@ describe('SignInUseCase', () => {
     const authServiceStub = {
       generateAuthToken: jest.fn(() => 'A.JWT.TOKEN'),
       comparePasswords: jest.fn(() => true),
+      whitelistAuthToken: jest.fn(() => Promise.resolve()),
     };
 
     const sut = new SignInUseCase({
@@ -85,6 +86,26 @@ describe('SignInUseCase', () => {
     const result = await sut.signin(validInput);
 
     expect(authServiceStub.generateAuthToken).toHaveBeenCalledWith(user);
+
+    expect(result).toEqual('A.JWT.TOKEN');
+  });
+
+  it('should whitelist the generated(and returned) jwt token', async () => {
+    const { sut, userRepositoryStub, authServiceStub, validInput } = makeSut();
+
+    const user = { id: 1 };
+    jest
+      .spyOn(userRepositoryStub, 'findByProfileId')
+      .mockResolvedValueOnce(user);
+
+    jest.spyOn(authServiceStub, 'generateAuthToken');
+
+    const result = await sut.signin(validInput);
+
+    expect(authServiceStub.generateAuthToken).toHaveBeenCalledWith(user);
+    expect(authServiceStub.whitelistAuthToken).toHaveBeenCalledWith(
+      'A.JWT.TOKEN',
+    );
 
     expect(result).toEqual('A.JWT.TOKEN');
   });
