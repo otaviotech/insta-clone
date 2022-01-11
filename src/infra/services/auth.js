@@ -11,8 +11,6 @@ export class AuthService {
 
   #findWhitelistedTokenRepository;
 
-  #userRepository;
-
   constructor({
     authTokenGenerator,
     passwordHashComparer,
@@ -20,7 +18,6 @@ export class AuthService {
     authTokenValidator,
     whitelistAuthTokenRepository,
     findWhitelistedTokenRepository,
-    userRepository,
   }) {
     this.#authTokenGenerator = authTokenGenerator;
     this.#passwordHashComparer = passwordHashComparer;
@@ -28,7 +25,6 @@ export class AuthService {
     this.#authTokenValidator = authTokenValidator;
     this.#whitelistAuthTokenRepository = whitelistAuthTokenRepository;
     this.#findWhitelistedTokenRepository = findWhitelistedTokenRepository;
-    this.#userRepository = userRepository;
   }
 
   async generateAuthToken(payload) {
@@ -47,7 +43,7 @@ export class AuthService {
     return this.#authTokenValidator.validateAuthToken(token);
   }
 
-  async whitelistAuthTokenRepository(token) {
+  async whitelistAuthToken(token) {
     return this.#whitelistAuthTokenRepository.whitelistAuthToken(token);
   }
 
