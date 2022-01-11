@@ -35,6 +35,10 @@ export class SignInUseCase {
       throw new InvalidCredentialsError();
     }
 
-    return this.#authService.generateAuthToken({ id: user?.id });
+    const token = this.#authService.generateAuthToken({ id: user?.id });
+
+    await this.#authService.whitelistAuthToken(token);
+
+    return token;
   }
 }
