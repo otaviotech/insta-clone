@@ -18,6 +18,8 @@ jobs:
         image: postgres
         env:
           POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -42,10 +44,10 @@ jobs:
         run: npm ci
 
       - name: Generate .env.test
-        run: echo DATABASE_URL=postgresql://postgres:postgres@postgres:5432/insta_clone_tests?schema=public >> .env.test
+        run: echo DATABASE_URL=postgresql://postgres:postgres@localhost:5432/insta_clone_tests?schema=public >> .env.test
 
       - name: Run all tests
-        run: npm run test:ci
+        run: npm run reset-test-db && npm run test:ci
 
       - name: Remove .env.test
         run: rm .env.test
