@@ -17,12 +17,16 @@ servers:
     description: Dev Environment
 
 tags:
-  - name: auth
+  - name: Authentication
     description: Authentication
+  - name: Profile
+    description: Profile
 
 paths:
   /auth/signup:
     post:
+      tags:
+        - Authentication
       summary: Create an account
       description: Creates an account.
       operationId: signup
@@ -98,6 +102,8 @@ paths:
 
   /auth/signin:
     post:
+      tags:
+        - Authentication
       summary: Sign in
       description: Signin a user.
       operationId: signin
@@ -148,6 +154,8 @@ paths:
 
   /auth/signout:
     post:
+      tags:
+        - Authentication
       summary: Signout
       description: Signout a user.
       operationId: signout
@@ -158,6 +166,61 @@ paths:
         400:
           $ref: '#/definitions/InvalidCredentialsErrorResponse'
 
+        500:
+          $ref: '#/definitions/InternalErrorResponse'
+
+  /profile/{profileId}/follow:
+    post:
+      tags:
+        - Profile
+      summary: Follow a profile
+      description: Start following a profile.
+      operationId: follow
+      parameters:
+        - name: profileId
+          in: path
+          description: The id of the profile that is going to be followed
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                followerProfileId:
+                  type: integer
+                  description: The id of the profile that is going to be the follower. This is necessary because users can have many profiles.
+                  required: true
+                  example: 2
+      responses:
+        200:
+          description: Follow request created successfuly.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    description: The response body.
+                    properties:
+                      status:
+                        type: string
+                        example: PENDING
+              examples:
+                follow_public_profile:
+                  value:
+                    status: CONFIRMED
+                follow_private_profile:
+                  value:
+                    status: PENDING
+        400:
+          $ref: '#/definitions/InvalidCredentialsErrorResponse'
+        404:
+          $ref: '#/definitions/ResourceNotFoundErrorResponse'
         500:
           $ref: '#/definitions/InternalErrorResponse'
 
@@ -180,6 +243,7 @@ definitions:
                   type: string
                   description: The details of the error.
                   example: Something went wrong.
+
   InvalidCredentialsErrorResponse:
     description: Sent credentials are invalid. Maybe your auth token is already expired.
     content:
@@ -194,3 +258,17 @@ definitions:
                   type: string
                   description: The name of the error.
                   example: InvalidCredentialsError
+  ResourceNotFoundErrorResponse:
+    description: Resource not found.
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            error:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the error.
+                  example: ResourceNotFoundError
