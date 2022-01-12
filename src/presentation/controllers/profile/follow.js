@@ -13,7 +13,7 @@ export class FollowController {
 
   async handle(req) {
     const input = {
-      profileId: req?.params?.profileId,
+      profileId: Number(req?.params?.profileId),
       followerProfileId: req?.body?.followerProfileId,
       followerUserId: req?.user?.id,
     };
