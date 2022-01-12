@@ -25,9 +25,12 @@
     "dev": "nodemon --es-module-specifier-resolution=node ./src/main/server/index.js",
     "start": "node --es-module-specifier-resolution=node ./src/main/server/index.js",
     "prepare": "husky install",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "test:ci": "npm run test -- --coverage",
+    "test": "NODE_OPTIONS=--experimental-vm-modules dotenv -e .env.test jest --",
+    "test:unit": "NODE_OPTIONS=--experimental-vm-modules dotenv -e .env.test jest .test.js --",
+    "test:integration": "NODE_OPTIONS=--experimental-vm-modules dotenv -e .env.test jest .spec.js --",
+    "test:ci": "NODE_OPTIONS=--experimental-vm-modules dotenv -e .env.test jest -- --coverage",
     "migrate": "prisma migrate deploy",
+    "reset-test-db": "dotenv -e .env.test -- prisma migrate reset --force",
     "sentry": "node --es-module-specifier-resolution=node ./scripts/sentry.js"
   },
   "devDependencies": {
@@ -56,6 +59,7 @@
     "body-parser": "^1.19.1",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
+    "dotenv-cli": "^4.1.1",
     "express": "^4.17.2",
     "express-async-errors": "^3.1.1",
     "express-ruid": "^1.1.4",
