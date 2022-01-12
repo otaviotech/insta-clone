@@ -98,9 +98,9 @@ paths:
 
   /auth/signin:
     post:
-      summary: Login
-      description: Logs a user in.
-      operationId: login
+      summary: Sign in
+      description: Signin a user.
+      operationId: signin
       requestBody:
         required: true
         content:
@@ -141,35 +141,56 @@ paths:
                         type: string
                         example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
         400:
-          description: Sent credentials are invalid.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: object
-                    properties:
-                      name:
-                        type: string
-                        description: The name of the error.
-                        example: InvalidCredentialsError
+          $ref: '#definitions/InvalidCredentialsErrorResponse'
 
         500:
-          description: Something went wrong while handling the request.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: object
-                    properties:
-                      name:
-                        type: string
-                        description: The name of the error.
-                        example: InternalError
-                      message:
-                        type: string
-                        description: The details of the error.
-                        example: Something went wrong.
+          $ref: '#/definitions/InternalErrorResponse'
+
+  /auth/signout:
+    post:
+      summary: Signout
+      description: Signout a user.
+      operationId: signout
+      responses:
+        200:
+          description: Signout successul. The auth token should not work anymore.
+
+        400:
+          $ref: '#/definitions/InvalidCredentialsErrorResponse'
+
+        500:
+          $ref: '#/definitions/InternalErrorResponse'
+
+definitions:
+  InternalErrorResponse:
+    description: Something went wrong while handling the request.
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            error:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the error.
+                  example: InternalError
+                message:
+                  type: string
+                  description: The details of the error.
+                  example: Something went wrong.
+  InvalidCredentialsErrorResponse:
+    description: Sent credentials are invalid. Maybe your auth token is already expired.
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            error:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the error.
+                  example: InvalidCredentialsError
