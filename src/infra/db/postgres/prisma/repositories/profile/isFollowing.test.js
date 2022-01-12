@@ -22,27 +22,23 @@ describe('PrismaIsFollowingRepository', () => {
   it('should call Prisma with the correct payload', async () => {
     const { sut, prismaMock, validInput } = makeSut();
 
-    jest.spyOn(prismaMock.profile, 'count').mockResolvedValueOnce({
-      number: 0,
-    });
+    jest.spyOn(prismaMock.follow, 'count').mockResolvedValueOnce(0);
 
     const result = await sut.isFollowing(validInput);
 
     expect(result).toBe(false);
-    expect(prismaMock.profile.count).toHaveBeenCalledWith({
+    expect(prismaMock.follow.count).toHaveBeenCalledWith({
       where: {
-        followerId: validInput.followedId,
+        followerId: validInput.followerId,
         followedId: validInput.followedId,
       },
     });
   });
 
-  it('should return true if profile is not found', async () => {
+  it('should return true if is already following', async () => {
     const { sut, prismaMock, validInput } = makeSut();
 
-    jest
-      .spyOn(prismaMock.profile, 'count')
-      .mockResolvedValueOnce({ number: 1 });
+    jest.spyOn(prismaMock.follow, 'count').mockResolvedValueOnce(1);
 
     const result = await sut.isFollowing(validInput);
 

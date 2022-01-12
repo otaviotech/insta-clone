@@ -31,7 +31,7 @@ describe('PrismaAddFollowerRepository', () => {
     expect(result).toEqual({ status: 'CONFIRMED' });
     expect(prismaMock.follow.create).toHaveBeenCalledWith({
       data: {
-        followerId: validInput.followedId,
+        followerId: validInput.followerId,
         followedId: validInput.followedId,
       },
     });

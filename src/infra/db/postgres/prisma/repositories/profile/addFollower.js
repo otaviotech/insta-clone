@@ -8,7 +8,7 @@ export class PrismaAddFollowerRepository {
   async addFollower(input) {
     const result = await this.#prisma.follow.create({
       data: {
-        followerId: input.followedId,
+        followerId: input.followerId,
         followedId: input.followedId,
       },
     });

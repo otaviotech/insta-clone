@@ -5,7 +5,7 @@ import { FollowUseCase } from './follow';
 describe('FollowUseCase', () => {
   const makeSut = () => {
     const profileRepositoryStub = {
-      findManyByIds: jest.fn(),
+      findManyProfilesByIds: jest.fn(),
       isFollowing: jest.fn(),
       addFollower: jest.fn(),
     };
@@ -29,12 +29,12 @@ describe('FollowUseCase', () => {
   it('should throw a ResourceNotFoundError if any of the profiles are not found', async () => {
     const { sut, profileRepositoryStub, validInput } = makeSut();
 
-    profileRepositoryStub.findManyByIds.mockResolvedValueOnce([]);
+    profileRepositoryStub.findManyProfilesByIds.mockResolvedValueOnce([]);
 
     const promise = sut.follow(validInput);
 
     expect(promise).rejects.toThrow(new ResourceNotFoundError());
-    expect(profileRepositoryStub.findManyByIds).toHaveBeenCalledWith([
+    expect(profileRepositoryStub.findManyProfilesByIds).toHaveBeenCalledWith([
       validInput.profileId,
       validInput.followerProfileId,
     ]);
@@ -43,7 +43,7 @@ describe('FollowUseCase', () => {
   it("should throw a ForbiddenError if it's already following", (done) => {
     const { sut, profileRepositoryStub, validInput } = makeSut();
 
-    profileRepositoryStub.findManyByIds.mockResolvedValueOnce([
+    profileRepositoryStub.findManyProfilesByIds.mockResolvedValueOnce([
       { id: validInput.profileId },
       { id: validInput.followerProfileId },
     ]);
@@ -55,7 +55,9 @@ describe('FollowUseCase', () => {
       .then(() => done.fail())
       .catch((error) => {
         expect(error).toEqual(new ForbiddenError());
-        expect(profileRepositoryStub.findManyByIds).toHaveBeenCalledWith([
+        expect(
+          profileRepositoryStub.findManyProfilesByIds,
+        ).toHaveBeenCalledWith([
           validInput.profileId,
           validInput.followerProfileId,
         ]);
@@ -72,7 +74,7 @@ describe('FollowUseCase', () => {
 
   it('should add the follower to the profile', async () => {
     const { sut, profileRepositoryStub, validInput } = makeSut();
-    profileRepositoryStub.findManyByIds.mockResolvedValueOnce([
+    profileRepositoryStub.findManyProfilesByIds.mockResolvedValueOnce([
       { id: validInput.profileId },
       { id: validInput.followerProfileId },
     ]);

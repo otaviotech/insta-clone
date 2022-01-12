@@ -43,7 +43,7 @@ model Follow {
   followedId Int
   follower   Profile      @relation(fields: [followerId], references: [id], name: "following")
   followerId Int
-  status     FollowStatus @default(PENDING)
+  status     FollowStatus @default(CONFIRMED)
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
   deletedAt  DateTime?

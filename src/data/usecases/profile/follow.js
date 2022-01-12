@@ -8,7 +8,7 @@ export class FollowUseCase {
   }
 
   async follow(input) {
-    const profiles = await this.#profileRepository.findManyByIds([
+    const profiles = await this.#profileRepository.findManyProfilesByIds([
       input.profileId,
       input.followerProfileId,
     ]);

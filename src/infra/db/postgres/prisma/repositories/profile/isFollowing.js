@@ -6,13 +6,13 @@ export class PrismaIsFollowingRepository {
   }
 
   async isFollowing(input) {
-    const result = await this.#prisma.profile.count({
+    const count = await this.#prisma.follow.count({
       where: {
-        followerId: input.followedId,
+        followerId: input.followerId,
         followedId: input.followedId,
       },
     });
 
-    return result?.number > 0;
+    return count > 0;
   }
 }

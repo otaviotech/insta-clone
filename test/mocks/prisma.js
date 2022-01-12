@@ -11,6 +11,7 @@ export const createPrismaMock = () => ({
     count: jest.fn(),
   },
   follow: {
+    count: jest.fn(),
     create: jest.fn(),
   },
 });
