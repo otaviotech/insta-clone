@@ -1,15 +1,17 @@
 export class Profile {
   constructor({
-    id = null,
-    userId = null,
-    username = null,
-    name = null,
-    site = null,
-    bio = null,
-    email = null,
-    phone = null,
-    createdAt = null,
-    updatedAt = null,
+    id,
+    userId,
+    username,
+    name,
+    site,
+    bio,
+    email,
+    phone,
+    createdAt,
+    updatedAt,
+    followers,
+    following,
   } = {}) {
     this.id = id;
     this.userId = userId;
@@ -19,6 +21,8 @@ export class Profile {
     this.bio = bio;
     this.email = email;
     this.phone = phone;
+    this.followers = followers?.map((f) => new Profile(f));
+    this.following = following?.map((f) => new Profile(f));
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }
