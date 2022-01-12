@@ -5,6 +5,7 @@ import { AppEnv } from '../env';
 import { adaptLogTags, adaptRequestForLogging } from './utils';
 
 const isProduction = AppEnv.NODE_ENV === 'production';
+const isTest = AppEnv.NODE_ENV === 'test';
 const SERIALIZATION_DEPTH = 10;
 
 const sentryStream = createWriteStream({
@@ -23,6 +24,7 @@ const pinoLogger = pino(
     depthLimit: SERIALIZATION_DEPTH,
     prettyPrint,
     prettifier,
+    level: isTest ? 'error' : 'debug',
   },
   pino.multistream([sentryStream, process.stdout]),
 );
