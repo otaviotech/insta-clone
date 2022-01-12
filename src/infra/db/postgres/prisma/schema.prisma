@@ -32,4 +32,24 @@ model Profile {
   deletedAt DateTime?
 
   user User @relation(fields: [userId], references: [id])
+
+  followers Follow[] @relation(name: "followers")
+  follwing  Follow[] @relation(name: "following")
+}
+
+model Follow {
+  id         Int          @id @default(autoincrement())
+  followed   Profile      @relation(fields: [followedId], references: [id], name: "followers")
+  followedId Int
+  follower   Profile      @relation(fields: [followerId], references: [id], name: "following")
+  followerId Int
+  status     FollowStatus @default(PENDING)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  deletedAt  DateTime?
+}
+
+enum FollowStatus {
+  PENDING
+  CONFIRMED
 }
