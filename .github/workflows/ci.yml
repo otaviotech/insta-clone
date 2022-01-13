@@ -55,8 +55,10 @@ jobs:
 
       - name: Generate .env.test
         run: |
-          echo "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/insta_clone_tests?schema=public" > .env.test
+          echo "PORT=3000" > .env.test
+          echo "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/insta_clone_tests?schema=public" >> .env.test
           echo "REDIS_URL=//localhost:6379" >> .env.test
+          echo "AUTH_SECRET=abc123" >> .env.test
 
       - name: Run all tests
         run: npm run reset-test-db && npm run test:ci
