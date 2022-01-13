@@ -54,8 +54,6 @@ describe('Follow Integration Test', () => {
 
     const { jwt } = loginResponse.body.data;
 
-    console.log('aaaaaaaaaa');
-
     const followResponse = await supertest(app)
       .post(`/v1/profile/${followed.profiles[0].id}/follow`)
       .set('Authorization', `Bearer ${jwt}`)
