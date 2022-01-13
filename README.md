@@ -1,4 +1,4 @@
-[![codecov](https://codecov.io/gh/otaviotech/insta-clone/branch/main/graph/badge.svg?token=Y4MRTD9DM4)](https://codecov.io/gh/otaviotech/insta-clone) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/otaviotech/insta-clone/ci)
+[![codecov](https://codecov.io/gh/otaviotech/insta-clone/branch/main/graph/badge.svg?token=Y4MRTD9DM4)](https://codecov.io/gh/otaviotech/insta-clone) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/otaviotech/insta-clone/CI)
 
 # insta-clone
 
