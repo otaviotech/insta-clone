@@ -1,5 +1,8 @@
 import supertest from 'supertest';
-import { resetDatabase } from '../../../../../test/utils/db';
+import {
+  disconnectDatabase,
+  resetDatabase,
+} from '../../../../../test/utils/db';
 import {
   EmailAlreadyTakenError,
   UsernameAlreadyTakenError,
@@ -13,25 +16,12 @@ const validInput = {
   password: 'strongpassword!',
 };
 
-const createUserInDb = async () =>
-  prismaClient.user.create({
-    data: {
-      email: validInput.email,
-      password: 'some_hash',
-      profiles: {
-        create: {
-          email: validInput.email,
-          username: validInput.username,
-        },
-      },
-    },
-  });
-
 describe('SignUp Integration Test', () => {
-  beforeEach(resetDatabase);
-  afterAll(resetDatabase);
+  beforeAll(resetDatabase);
+  afterAll(disconnectDatabase);
 
   it('should create a new user with a profile', async () => {
+    await resetDatabase();
     const response = await supertest(app)
       .post('/v1/auth/signup')
       .send(validInput)
@@ -56,8 +46,6 @@ describe('SignUp Integration Test', () => {
   });
 
   it('should not create another user with the same email', async () => {
-    await createUserInDb();
-
     const response = await supertest(app)
       .post('/v1/auth/signup')
       .send(validInput)
@@ -69,8 +57,6 @@ describe('SignUp Integration Test', () => {
   });
 
   it('should not create another user with the same username', async () => {
-    await createUserInDb();
-
     const response = await supertest(app)
       .post('/v1/auth/signup')
       .send({

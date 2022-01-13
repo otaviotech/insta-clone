@@ -26,6 +26,16 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
+      redis:
+        image: redis
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -44,10 +54,12 @@ jobs:
         run: npm ci
 
       - name: Generate .env.test
-        run: echo DATABASE_URL=postgresql://postgres:postgres@localhost:5432/insta_clone_tests?schema=public >> .env.test
+        run: |
+          echo DATABASE_URL=postgresql://postgres:postgres@localhost:5432/insta_clone_tests?schema=public\nREDIS_URL=//localhost:6379\n >> .env.test
+          echo REDIS_URL=//localhost:6379\n >> .env.test
 
       - name: Run all tests
-        run: npm run reset-test-db && npm run test:ci
+        run: npm run test:ci
 
       - name: Remove .env.test
         run: rm .env.test
