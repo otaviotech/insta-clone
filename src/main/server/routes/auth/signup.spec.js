@@ -1,8 +1,5 @@
 import supertest from 'supertest';
-import {
-  disconnectDatabase,
-  resetDatabase,
-} from '../../../../../test/utils/db';
+import { resetDatabase } from '../../../../../test/utils/db';
 import {
   EmailAlreadyTakenError,
   UsernameAlreadyTakenError,
@@ -17,11 +14,9 @@ const validInput = {
 };
 
 describe('SignUp Integration Test', () => {
-  beforeAll(resetDatabase);
-  afterAll(disconnectDatabase);
+  beforeEach(resetDatabase);
 
   it('should create a new user with a profile', async () => {
-    await resetDatabase();
     const response = await supertest(app)
       .post('/v1/auth/signup')
       .send(validInput)
@@ -46,6 +41,10 @@ describe('SignUp Integration Test', () => {
   });
 
   it('should not create another user with the same email', async () => {
+    await supertest(app)
+      .post('/v1/auth/signup')
+      .send(validInput)
+      .set('Content-Type', 'application/json');
     const response = await supertest(app)
       .post('/v1/auth/signup')
       .send(validInput)
@@ -57,6 +56,10 @@ describe('SignUp Integration Test', () => {
   });
 
   it('should not create another user with the same username', async () => {
+    await supertest(app)
+      .post('/v1/auth/signup')
+      .send(validInput)
+      .set('Content-Type', 'application/json');
     const response = await supertest(app)
       .post('/v1/auth/signup')
       .send({

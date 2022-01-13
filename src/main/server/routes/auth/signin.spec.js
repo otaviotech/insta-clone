@@ -1,13 +1,10 @@
 import supertest from 'supertest';
-import {
-  disconnectDatabase,
-  resetDatabase,
-} from '../../../../../test/utils/db';
+import { resetDatabase } from '../../../../../test/utils/db';
 import { app } from '../../app';
 
 const userInDb = {
-  email: 'johndoe2@email.com',
-  username: 'jdoe2',
+  email: 'johndoe@email.com',
+  username: 'jdoe',
   password: 'abc123',
 };
 
@@ -18,8 +15,7 @@ const createUserInDb = async () =>
     .send(userInDb);
 
 describe('SignIn Integration Test', () => {
-  beforeAll(resetDatabase);
-  afterAll(disconnectDatabase);
+  beforeEach(resetDatabase);
 
   it('should login using with email', async () => {
     await createUserInDb();

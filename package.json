@@ -27,7 +27,7 @@
     "prepare": "husky install",
     "test": "NODE_OPTIONS=--experimental-vm-modules dotenv -e .env.test jest --",
     "test:unit": "NODE_OPTIONS=--experimental-vm-modules dotenv -e .env.test jest .test.js --",
-    "test:integration": "NODE_OPTIONS=--experimental-vm-modules dotenv -e .env.test jest .spec.js --runInBand",
+    "test:integration": "NODE_OPTIONS=--experimental-vm-modules dotenv -e .env.test jest --runInBand --verbose -- ./test/integration/run.spec.js",
     "test:ci": "NODE_OPTIONS=--experimental-vm-modules dotenv -e .env.test jest --runInBand -- --coverage",
     "migrate": "prisma migrate deploy",
     "reset-test-db": "dotenv -e .env.test -- prisma migrate reset --force",
