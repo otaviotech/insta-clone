@@ -29,7 +29,7 @@ describe('FollowUseCase', () => {
   it('should throw a ResourceNotFoundError if any of the profiles are not found', async () => {
     const { sut, profileRepositoryStub, validInput } = makeSut();
 
-    profileRepositoryStub.findManyProfilesByIds.mockResolvedValueOnce([]);
+    profileRepositoryStub.findManyProfilesByIds.mockResolvedValueOnce([{}]);
 
     const promise = sut.follow(validInput);
 

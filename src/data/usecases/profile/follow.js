@@ -13,7 +13,7 @@ export class FollowUseCase {
       input.followerProfileId,
     ]);
 
-    if (profiles.length === 0) {
+    if (profiles.length < 2) {
       throw new ResourceNotFoundError();
     }
 
