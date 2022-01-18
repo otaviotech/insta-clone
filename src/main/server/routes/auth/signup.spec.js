@@ -1,5 +1,8 @@
 import supertest from 'supertest';
-import { resetDatabase } from '../../../../../test/utils/db';
+import {
+  disconnectDatabase,
+  resetDatabase,
+} from '../../../../../test/utils/db';
 import {
   EmailAlreadyTakenError,
   UsernameAlreadyTakenError,
@@ -15,6 +18,7 @@ const validInput = {
 
 describe('SignUp Integration Test', () => {
   beforeEach(resetDatabase);
+  afterAll(disconnectDatabase);
 
   it('should create a new user with a profile', async () => {
     const response = await supertest(app)
